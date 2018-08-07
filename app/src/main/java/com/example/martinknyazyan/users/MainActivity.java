@@ -1,9 +1,17 @@
 package com.example.martinknyazyan.users;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-public class MainActivity extends AppCompatActivity {
+import com.example.martinknyazyan.users.base.BaseActivity;
+
+import javax.inject.Inject;
+
+import retrofit2.Retrofit;
+
+public class MainActivity extends BaseActivity {
+
+    @Inject
+    Retrofit retrofit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
