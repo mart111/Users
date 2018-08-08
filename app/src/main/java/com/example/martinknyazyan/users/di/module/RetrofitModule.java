@@ -1,5 +1,7 @@
 package com.example.martinknyazyan.users.di.module;
 
+import com.example.martinknyazyan.users.domain.UsersService;
+
 import dagger.Module;
 import dagger.Provides;
 import okhttp3.OkHttpClient;
@@ -11,11 +13,15 @@ import retrofit2.converter.gson.GsonConverterFactory;
 @Module
 public class RetrofitModule {
 
+    @Provides
+    public UsersService provideService(Retrofit retrofit) {
+        return retrofit.create(UsersService.class);
+    }
 
     @Provides
-    public Retrofit getRetrofitInstance(OkHttpClient client) {
+    public Retrofit provideRetrofit(OkHttpClient client) {
         return new Retrofit.Builder()
-                .baseUrl("http://api.randomuser.me")
+                .baseUrl(UsersService.END_POINT)
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .client(client)
@@ -23,14 +29,14 @@ public class RetrofitModule {
     }
 
     @Provides
-    public OkHttpClient getClient(HttpLoggingInterceptor interceptor) {
+    public OkHttpClient provideOkHttp(HttpLoggingInterceptor interceptor) {
         OkHttpClient.Builder client = new OkHttpClient.Builder();
         client.addInterceptor(interceptor);
         return client.build();
     }
 
     @Provides
-    public HttpLoggingInterceptor getInterceptor() {
+    public HttpLoggingInterceptor provideHttpLogging() {
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         return interceptor;
